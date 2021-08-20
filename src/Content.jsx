@@ -1,34 +1,35 @@
-import React from 'react';
-import CoffeCard from './CoffeCard';
-import { Grid } from '@material-ui/core';
-
-import photo from './Images/alka.png';
+import React, { useState, useEffect } from "react";
+import CoffeCard from "./CoffeCard";
+import { Grid } from "@material-ui/core";
+import { getProducts } from "./api/product";
+import photo from "./Images/alka.png";
 
 const Content = () => {
-     return (
-         <Grid container spacing={2}>
-             <Grid item xs={12} sm={6}>
-                <CoffeCard title="Alkasol" subtitle="Rs.4,00" avatarSrc={photo} imgSrc={photo} description="About: This medicine is really helpful for urine infection. Take this medicine under doctors prescription"/>
-                
-             </Grid>
-             <Grid item xs={12} sm={4}>
-                 <CoffeCard/>
-                 </Grid>
-                 <Grid item xs={12} sm={4}>
-                  <CoffeCard/>
-                 </Grid>
-                 <Grid item xs={12} sm={4}>
-                  <CoffeCard/>
-                 </Grid>
-                 <Grid item xs={12} sm={4}>
-                  <CoffeCard/>
-                 </Grid>
-                 <Grid item xs={12} sm={4}>
-                  <CoffeCard/>
-                 </Grid>
+  const [Product, setProduct] = useState([]);
+  useEffect(() => {
+    getProducts().then((data) => {
+      setProduct(data);
+    });
+  }, []);
+
+  console.log(Product);
+
+  return (
+    <div style={{padding:"20px"}}>
+      <Grid container spacing={2}>
+        {Product.map((item) => (
+          <Grid item xs={12} sm={12} md={4}>
+            <CoffeCard
+              title={item.name}
+              subtitle={item.price}
+              avatarSrc={item.ImagePath}
+              imgSrc={item.ImagePath}
               
-         </Grid>
-     
-     );
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  );
 };
 export default Content;
